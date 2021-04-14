@@ -10,10 +10,10 @@ export default class Product extends Component {
     return (
       <Switch>
         {/* exact 开启路径完全匹配 */}
-        <Route path='/admin/product' component={Home} exact/>
-        <Route path='/admin/product/addupdate' component={AddUpdate} />
-        <Route path='/admin/product/detail' component={Detail} />
-        <Redirect to='/admin/product'/>
+        <Route path='/product' component={Home} exact/>
+        <Route path='/product/addupdate' component={AddUpdate} />
+        <Route path='/product/detail' component={Detail} />
+        <Redirect to='/product'/>
       </Switch>
     )
   }

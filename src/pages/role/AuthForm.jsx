@@ -35,12 +35,23 @@ export default class AuthForm extends Component {
   }
   // 选中某个node节点回调
   onCheck = (checkedKeys, info) => {
-    console.log('onCheck', checkedKeys, info);
     this.setState({checkedKeys})
-  };
+  }
+
+  // 为父组件提供最新menus的方法
+  getMenus = () => {
+    return this.state.checkedKeys;
+  }
 
   componentWillMount() {
     this.treeNodes = this.getTreeNodes(menuList);
+  }
+  // 组件接收到新的props时调用
+  componentWillReceiveProps(nextProps) {
+    const menus = nextProps.role.name;
+    this.setState({
+      checkedKeys:menus
+    })
   }
 
   render() {

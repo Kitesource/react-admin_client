@@ -66,13 +66,13 @@ export default class Home extends Component {
             <span>
               {/* 将product对象使用state传递给目标路由组件 */}
               <LinkButton 
-                onClick={() => {this.props.history.push('/admin/product/detail', {product} )}}
+                onClick={() => {this.props.history.push('/product/detail', {product} )}}
               >
               详情
               </LinkButton>
               
               <LinkButton 
-                onClick={() => {this.props.history.push('/admin/product/addupdate', {product} )}}
+                onClick={() => {this.props.history.push('/product/addupdate', {product} )}}
               >
                 修改
               </LinkButton>
@@ -137,7 +137,7 @@ export default class Home extends Component {
       </span>
     )
     const extra = (
-      <Button type="primary" onClick={()=>{this.props.history.push('/admin/product/addupdate')}}>
+      <Button type="primary" onClick={()=>{this.props.history.push('/product/addupdate')}}>
         <Icon type="plus" />
         添加商品
       </Button>
@@ -152,6 +152,7 @@ export default class Home extends Component {
           dataSource={products}
           columns={this.columns}
           pagination={{
+            current:this.pageNum,
             defaultPageSize: PAGE_SIZE,
             total,
             showQuickJumper: true,

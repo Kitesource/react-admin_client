@@ -16,37 +16,37 @@ import Product from '../product';
 import Order from '../order'
 
 const { Footer, Sider, Content } = Layout;
+
 export default class Admin extends Component {
-  render() {
-    const user = memoryUtils.user;
-    // 内存中没有存储user => 没有登录
-    if (!user || !user._id) {
-      // 自动跳转到登录(render())中
-      return <Redirect to='/login' />
+  render () {
+    const user = memoryUtils.user
+    // 如果内存没有存储user ==> 当前没有登陆
+    if(!user || !user._id) {
+      // 自动跳转到登陆(在render()中)
+      return <Redirect to='/login'/>
     }
-    
     return (
-      <Layout style={{ minHeight: '100%' }}>
+      <Layout style={{minHeight: '100%'}}>
         <Sider>
           <LeftNav/>
         </Sider>
         <Layout>
           <Header>Header</Header>
-          <Content style={{ backgroundColor: '#fff', margin:20 }}>
+          <Content style={{margin: 20, backgroundColor: '#fff'}}>
             <Switch>
-              <Route path="/admin/home" component={Home}/>
-              <Route path="/admin/category" component={Category}/>
-              <Route path="/admin/product" component={Product}/>
-              <Route path="/admin/role" component={Role}/>
-              <Route path="/admin/user" component={User}/>
-              <Route path="/admin/charts/bar" component={Bar}/>
-              <Route path="/admin/charts/line" component={Line}/>
-              <Route path="/admin/charts/pie" component={Pie}/>
-              <Route path='/admin/order' component={Order}/>
-              <Redirect to="/admin/home"/>
+              <Route path='/home' component={Home}/>
+              <Route path='/category' component={Category}/>
+              <Route path='/product' component={Product}/>
+              <Route path='/user' component={User}/>
+              <Route path='/role' component={Role}/>
+              <Route path="/charts/bar" component={Bar}/>
+              <Route path="/charts/pie" component={Pie}/>
+              <Route path="/charts/line" component={Line}/>
+              <Route path="/order" component={Order}/>
+              <Redirect to='/home'/>
             </Switch>
           </Content>
-          <Footer style={{ textAlign: 'center', color: '#666', backgroundColor:'#fff' }}>推荐使用谷歌浏览器，可以获取更佳页面操作体验</Footer>
+          <Footer style={{textAlign: 'center', color: '#ccc'}}>推荐使用谷歌浏览器，可以获得更佳页面操作体验</Footer>
         </Layout>
       </Layout>
     )

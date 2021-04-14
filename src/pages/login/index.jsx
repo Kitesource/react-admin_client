@@ -53,8 +53,8 @@ class Login extends Component {
   validatePwd = (rule, value, callback) => {
     if (!value) {
       callback('密码必须输入!')
-    } else if (value.length < 4) {
-      callback('密码长度不能小于4位')
+    } else if (value.length < 3) {
+      callback('密码长度不能小于3位')
     } else if (value.length > 12) {
       callback('密码长度不能小于12位')
     } else if (!/^[a-zA-Z0-9]+$/.test(value)) {

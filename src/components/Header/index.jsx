@@ -29,23 +29,25 @@ class Header extends Component {
     const { city, weather, temperature } = res;
     this.setState({ city, weather, temperature })
   }
+
   getTitle = () => {
     // 得到当前请求路径
-    const path = this.props.location.pathname;
-    let title;
+    const path = this.props.location.pathname
+    let title
     menuConfig.forEach(item => {
-      //如果当前项的key与path一样，item的title就是需要显示的title
-      if (item.key === path) {
-        title = item.title;
+      if (item.key===path) { // 如果当前item对象的key与path一样,item的title就是需要显示的title
+        title = item.title
       } else if (item.children) {
-        //在所有item中查找匹配的
-        const cItem = item.children.find(cItem => cItem.key === path)
-        if (cItem) {
+        // 在所有子item中查找匹配的
+        const cItem = item.children.find(cItem => path.indexOf(cItem.key)===0)
+        // 如果有值才说明有匹配的
+        if(cItem) {
+          // 取出它的title
           title = cItem.title
         }
       }
     })
-    return title;
+    return title
   }
   // 退出登录
   logout = (event) => {

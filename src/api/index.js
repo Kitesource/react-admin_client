@@ -67,3 +67,15 @@ ajax(BASEURL + '/manage/product/'+ (product._id ? 'update' : 'add'), product, 'P
 export const reqRoles = () => ajax(BASEURL + '/manage/role/list', 'GET')
 // 添加角色
 export const reqAddRoles = (roleName) => ajax(BASEURL + '/manage/role/add',{roleName}, 'POST')
+// 更新角色权限
+export const reqUpdateRoles = (role) => ajax(BASEURL + '/manage/role/update',role, 'POST')
+
+// 获取用户列表
+export const reqUsers = () => ajax(BASEURL + '/manage/user/list', 'GET')
+// 删除用户
+export const reqDeleteUsers = (userId) => ajax(BASEURL + '/manage/user/delete',{userId}, 'POST')
+// 添加/更新用户
+export const reqAddUpdateUsers = (user) => ajax(BASEURL + '/manage/user/'+(user._id ? 'update' : 'add'),user, 'POST')
+
+
+

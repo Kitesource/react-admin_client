@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { Card, Button, Table,Modal, message } from 'antd'
-import { reqRoles,reqAddRoles } from '../../api/index'
+import { reqRoles,reqAddRoles,reqUpdateRoles } from '../../api/index'
+import memoryUtils from '../../utils/memoryUtils'
+import {removeUser} from '../../utils/storageUtils'
+import formatTime from '../../utils/dateUtils'
 import AddForm from './AddForm'
 import AuthForm from './AuthForm'
 
@@ -13,6 +16,8 @@ export default class Role extends Component {
     isShowAuth:false, 
   }
 
+  auth = React.createRef();
+
   initColumns = () => {
     this.columns = [
       {
@@ -22,10 +27,12 @@ export default class Role extends Component {
       {
         title: '创建时间',
         dataIndex: 'create_time',
+        render: (create_time) => formatTime(create_time)
       },
       {
         title: '授权时间',
         dataIndex: 'auth_time',
+        render: (auth_time) => formatTime(auth_time)
       },
       {
         title: '授权人',
@@ -81,8 +88,33 @@ export default class Role extends Component {
   }
 
   // 点击ok设置权限
-  updateRole = () => {
-
+  updateRole = async () => {
+    const role = this.state.role;
+    // 得到最新的menus
+    const menus = this.auth.current.getMenus();
+    role.menus = menus;
+    role.auth_name = memoryUtils.user.username;
+    role.auth_time = Date.now();
+    // 请求更新
+    const res = await reqUpdateRoles(role);
+    if(res.status === 0){
+      // 如果当前更新的是自己对应角色的权限，强制退出
+      if(role._id === memoryUtils.user.role_id){
+        message.success('当前角色权限更新,请重新登录!');
+        memoryUtils.user = {};
+        removeUser();
+        this.props.history.replace('/login');
+      } else{
+        message.success('更新权限成功!');
+        this.setState({
+          roles:[...this.state.roles]
+        })
+      }
+    } else{
+      message.error('更新权限失败!')
+    }
+    // 隐藏弹窗
+    this.setState({isShowAuth:false})
   }
 
   UNSAFE_componentWillMount() {
@@ -118,7 +150,12 @@ export default class Role extends Component {
         <Table
           bordered
           rowKey='_id'
-          rowSelection={{ type: 'radio', selectedRowKeys: [role._id] }}
+          rowSelection={{ 
+            type: 'radio', selectedRowKeys: [role._id],
+            onSelect: (role)=>{ //选择某个radio的回调
+              this.setState({role})
+            }
+          }}
           dataSource={roles}
           columns={this.columns}
           pagination={{ defaultPageSize: 6, showQuickJumper: true }}
@@ -148,7 +185,7 @@ export default class Role extends Component {
             this.setState({isShowAuth:false})
           }}
         >
-          <AuthForm role={role}/>
+          <AuthForm ref={this.auth} role={role} />
         </Modal>
       </Card>
     )
