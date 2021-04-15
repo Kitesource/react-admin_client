@@ -37,7 +37,7 @@ class Login extends Component {
           saveUser(user); //保存到local中
 
           // 跳转
-          this.props.history.replace('/admin')
+          this.props.history.replace('/home')
 
         }else{
           // 登录失败

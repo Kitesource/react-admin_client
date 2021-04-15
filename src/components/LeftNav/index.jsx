@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { Menu, Icon } from 'antd';
-import memoryUtils from '../../utils/memoryUtils'
+import {connect} from 'react-redux'
+import {setHeadTitle} from '../../redux/actions'
 
+import memoryUtils from '../../utils/memoryUtils'
 import './index.less'
 import logo from '../../assets/images/fu.png'
 import menuList from '../../config/menuConfig'
@@ -68,10 +70,17 @@ class LeftNav extends Component {
     return menuList.reduce((pre, item) => {
       // 如果当前用户有item对应的权限，才需要显示对应的菜单项
       if(this.hasAuth(item)){
+
         if (!item.children) {
+          // 判断item是否是当前对应的item
+          if(item.key === path || path.indexOf(item.key)===0){
+            // 更新redux中的headerTitle状态
+            this.props.setHeadTitle(item.title)
+          }
+
           pre.push((
             <Menu.Item key={item.key}>
-              <Link to={item.key}>
+              <Link to={item.key} onClick={()=>this.props.setHeadTitle(item.title)}>
                 <Icon type={item.icon} />
                 <span>{item.title}</span>
               </Link>
@@ -138,4 +147,7 @@ class LeftNav extends Component {
     新的组件向非路由组件传递3个属性：history/location
 */
 
-export default withRouter(LeftNav);
+export default connect(
+  state => ({}),
+  {setHeadTitle}
+)(withRouter(LeftNav));
